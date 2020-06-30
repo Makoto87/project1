@@ -1,0 +1,30 @@
+<!-- innerHTML用 -->
+
+<!--
+      問題文
+      以下のエディターにHTMLが書かれていますが、表記に誤りがあります。特定のIDを持つ要素を取得し、要素を正しい情報で上書きしてみましょう。
+-->
+
+<div>
+      <h1>American companies</h1>
+      <div>
+            <p id="apple">Apple is the company of movies</p>
+            <p id="netflix">Netflix is the company of cars</p>
+            <p id="facebook">Facebook is the company of hardware</p>
+            <p id="tesla">Tesla is the company of SNS</p>
+      </div>
+</div>
+
+<script>
+      let ele1 = document.getElementById("apple")
+      let ele2 = document.getElementById("netflix")
+      let ele3 = document.getElementById("facebook")
+      let ele4 = document.getElementById("tesla")
+
+      let string = " is the company of "
+
+      ele1.innerHTML = "Apple" + string + "hardware"
+      ele2.innerHTML = "Netflix" + string + "movies"
+      ele3.innerHTML = "Facebook" + string + "SNS"
+      ele4.innerHTML = "Tesla" + string + "cars"
+</script>
