@@ -1,0 +1,65 @@
+<!-- createElement -->
+
+<!--
+      問題文
+      以下のエディターにHTMLで、カテゴリーとそれに当てはまるものがいくつか書かれています。カテゴリーに当てはまるものを考えて、要素を付け足してください。また、新しいカテゴリーを考え、要素とともに書き加えてください。
+-->
+
+<div id="categories">
+      <div>
+            <h2>sports</h2>
+            <div id="sports">
+                  <p>baseball</p>
+                  <p>soccer</p>
+            </div>
+      </div>
+
+      <div>
+            <h2>countries</h2>
+            <div id="countries">
+                  <p>Japan</p>
+                  <p>America</p>
+            </div>
+      </div>
+</div>
+
+<!-- script内を空欄にして、ユーザーに書いてもらおうと思っています -->
+<script>
+      // 各カテゴリーの要素の追加
+      let sportsParagraph1 = document.createElement("p");
+      let sportsParagraph2 = document.createElement("p");
+      let countriesParagraph1 = document.createElement("p");
+      let countriesParagraph2 = document.createElement("p");
+
+      sportsParagraph1.innerHTML = "volleyball";
+      sportsParagraph2.innerHTML = "tennis";
+      countriesParagraph1.innerHTML = "China"
+      countriesParagraph2.innerHTML = "Korea"
+
+      let sportsDiv = document.getElementById("sports");
+      let countriesDiv = document.getElementById("countries");
+
+      sportsDiv.append(sportsParagraph1);
+      sportsDiv.append(sportsParagraph2);
+      countriesDiv.append(countriesParagraph1);
+      countriesDiv.append(countriesParagraph2);
+
+      // カテゴリーの追加
+      let animalCategory = document.createElement("div");
+      let animalTitle = document.createElement("h2");
+      let animalElement = document.createElement("div");
+      let animalParagraph1 = document.createElement("p");
+      let animalParagraph2 = document.createElement("p");
+
+      animalTitle.innerHTML = "animals";
+      animalParagraph1.innerHTML = "dog";
+      animalParagraph2.innerHTML = "cat";
+
+      let categoryDiv = document.getElementById("categories");
+
+      animalElement.append(animalParagraph1);
+      animalElement.append(animalParagraph2);
+      animalCategory.append(animalTitle);
+      animalCategory.append(animalElement);
+      categoryDiv.append(animalCategory);
+</script>

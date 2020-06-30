@@ -8,23 +8,24 @@
 <div>
       <h1>American companies</h1>
       <div>
-            <p id="apple">Apple is the company of movies</p>
-            <p id="netflix">Netflix is the company of cars</p>
-            <p id="facebook">Facebook is the company of hardware</p>
-            <p id="tesla">Tesla is the company of SNS</p>
+            <p id="apple">Apple offers electric vehicles with clean energy</p>
+            <p id="netflix">Netflix offers social platform where people can hang out</p>
+            <p id="facebook">Facebooks offers the world's most advanced operating system</p>
+            <p id="tesla">Telsa offers entertainment streaming services</p>
       </div>
 </div>
 
+<!-- script内を空欄にして、ユーザーに書いてもらおうと思っています -->
 <script>
-      let ele1 = document.getElementById("apple")
-      let ele2 = document.getElementById("netflix")
-      let ele3 = document.getElementById("facebook")
-      let ele4 = document.getElementById("tesla")
+      let ele1 = document.getElementById("apple");
+      let ele2 = document.getElementById("netflix");
+      let ele3 = document.getElementById("facebook");
+      let ele4 = document.getElementById("tesla");
 
-      let string = " is the company of "
+      let string = " offers ";
 
-      ele1.innerHTML = "Apple" + string + "hardware"
-      ele2.innerHTML = "Netflix" + string + "movies"
-      ele3.innerHTML = "Facebook" + string + "SNS"
-      ele4.innerHTML = "Tesla" + string + "cars"
+      ele1.innerHTML = "Apple" + string + "the world's most advanced operating system";
+      ele2.innerHTML = "Netflix" + string + "entertainment streaming services";
+      ele3.innerHTML = "Facebook" + string + "social platform where people can hang out";
+      ele4.innerHTML = "Tesla" + string + "electric vehicles with clean energy";
 </script>
