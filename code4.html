@@ -1,0 +1,82 @@
+<!-- フルーツのレンダリング -->
+
+<!--
+      問題文
+      以下に動物一覧を表示させるコードが書かれています。各動物がページに表示されるよう、script内コードを書き加えてください。表示させる動物と画像用URLは用意されたもの中から使用してください。
+-->
+
+<head>
+      <!-- Bootstrapの読み込み -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<style>
+      .animalImg{
+          width: 100px;
+          height: 100px;
+          padding: 1em;
+      }
+    
+      .animalDiv{
+          display: flex;
+          align-content: center;
+          justify-content: center;
+          width: 50%;
+          margin-top:2em;
+      }
+</style>
+
+<div>
+      <div class="row" id="animal-box">
+
+      </div>
+</div>
+
+<!-- script内を空欄にして、ユーザーに書いてもらおうと思っています -->
+<!-- 
+      url
+      dog: https://www.pakutaso.com/shared/img/thumb/uni20614IMG_0704_TP_V.jpg
+      cat: https://www.pakutaso.com/shared/img/thumb/nekocyan458A5348_TP_V.jpg
+      bird: https://www.pakutaso.com/shared/img/thumb/mitte44034_TP_V.jpg
+      no image: http://design-ec.com/d/e_others_50/l_e_others_500.png
+-->
+<script>
+      function searchImgUrl (animal) {
+            animal = animal.toLowerCase();
+
+            if (animal == "dog") {
+                  return "https://www.pakutaso.com/shared/img/thumb/uni20614IMG_0704_TP_V.jpg";
+            } else if (animal == "cat") {
+                  return "https://www.pakutaso.com/shared/img/thumb/nekocyan458A5348_TP_V.jpg";
+            } else if (animal == "bird") {
+                  return "https://www.pakutaso.com/shared/img/thumb/mitte44034_TP_V.jpg";
+            } else {
+                  return "http://design-ec.com/d/e_others_50/l_e_others_500.png";
+            }
+      }
+      // 文字と画像を生み出す・それらを格納する要素を作り入れる・箱をHTMLに入れる
+      function renderAnimal (animal, id) {
+            let div = document.createElement("div");
+            let name = document.createElement("h2");
+            let img = document.createElement("img");
+            img.src = searchImgUrl(animal);
+
+            name.innerHTML = "This animal is " + animal;
+
+            img.classList.add("animalImg");
+
+            div.append(name);
+            div.append(img);
+            div.classList.add("animalDiv");
+
+            id.append(div);
+      }
+
+      let id = document.getElementById("animal-box");
+
+      renderAnimal("dog", id);
+      renderAnimal("cat", id);
+      renderAnimal("bird", id);
+      renderAnimal("lion", id);
+
+</script>
