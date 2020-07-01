@@ -1,0 +1,124 @@
+<!-- データの表示 -->
+
+<!--
+      問題文
+      前項で作成したコードをもとに、データを表示する関数を作成しましょう
+      駅名・観光スポット・路線・地区名・画像を入れてください。
+      例1）渋谷駅
+      Shibya Station
+      Tourist spot: Hikarie・Scramble Square
+      Line: Yamanote Line・Toyoko Line
+      Ward: Shibuya-ku
+      Image URL: https://www.photock.jp/photo/middle/photo0000-5209.jpg
+
+      例2）新宿駅
+      Shinjuku Station
+      Tourist spot: Tocho, Kabukicho
+      Line: Yamanote Line・Marunouchi Line
+      Ward: Shinjuku-ku
+      Image URL: https://www.photock.jp/photo/middle/photo0000-1337.jpg
+
+       "", "", "", "-ku", "");
+      例3）東京駅
+      Tokyo Station
+      Tourist spot: Marunouchi Area, KITTE
+      Line: Yamanote Line・Marunouchi Line
+      Ward: Chiyoda-ku
+      Image URL: https://www.photock.jp/photo/middle/photo0000-1093.jpg
+-->
+
+<!--bootstrap-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<!-- ここからユーザーに入力してもらいます -->
+<div id="stations" class="bg-dark d-flex flex-column align-items-center justify-content-center">
+
+</div>
+
+<script>
+      function createStationCard (station, touristSpot, line, ward, imgUrl) {
+            // カードの左側の要素を作成
+            let stationName = document.createElement("h4");
+            let touristSpotDiv = document.createElement("div");
+            let touristSpotTitle = document.createElement("p");
+            let touristSpotName = document.createElement("p");
+            let lineDiv = document.createElement("div");
+            let lineTitle = document.createElement("p");
+            let lineName = document.createElement("p");
+            let wardDiv = document.createElement("div");
+            let wardTitle = document.createElement("p");
+            let wardName = document.createElement("p");
+
+            // 左側の要素内の文字を書く
+            stationName.innerHTML = station + " Station";
+            touristSpotTitle.innerHTML = "Tourist spot:";
+            touristSpotName.innerHTML = touristSpot;
+            lineTitle.innerHTML = "Line:";
+            lineName.innerHTML = line;
+            wardTitle.innerHTML = "Ward:";
+            wardName.innerHTML = ward;
+
+            // 左側のクラスを追加し、配置の調整をする
+            touristSpotTitle.classList.add("m-0");
+            touristSpotName.classList.add("m-0");
+            touristSpotDiv.classList.add("m-0");
+            lineTitle.classList.add("m-0");
+            lineName.classList.add("m-0");
+            lineDiv.classList.add("mt-3");
+            wardTitle.classList.add("m-0");
+            wardName.classList.add("m-0");
+            wardDiv.classList.add("mt-3");
+            stationName.classList.add("mb-4");
+
+            // 左側の要素をまとめていく
+            touristSpotDiv.append(touristSpotTitle);
+            touristSpotDiv.append(touristSpotName);
+            lineDiv.append(lineTitle);
+            lineDiv.append(lineName);
+            wardDiv.append(wardTitle);
+            wardDiv.append(wardName);
+
+            let leftDiv = document.createElement("div");
+            leftDiv.append(stationName);
+            leftDiv.append(touristSpotDiv);
+            leftDiv.append(lineDiv);
+            leftDiv.append(wardDiv);
+
+            // 左側のクラスを追加
+            leftDiv.classList.add("col-6");
+
+            // 右側を作成
+            let imgDiv = document.createElement("div");
+            let img = document.createElement("img");
+            img.src = imgUrl;
+
+            img.classList.add("w-100");
+
+            let rightDiv = document.createElement("div");
+            imgDiv.append(img);
+            rightDiv.append(imgDiv);
+
+            rightDiv.classList.add("col-6");
+
+            // 左側と右側を白い箱に入れる・クラスを追加する
+            let whiteBox = document.createElement("div");
+            whiteBox.classList.add("bg-white", "d-flex", "col-8", "align-items-center", "justify-content-center", "my-3");
+            whiteBox.append(leftDiv);
+            whiteBox.append(rightDiv);
+
+            return whiteBox;
+      }
+      
+      // idの要素を取得する
+      let idDiv = document.getElementById("stations");
+
+      // カード
+      let shibuya = createStationCard("Shibya", "Hikarie・Scramble Square", "Yamanote Line・Toyoko Line", "Shibuya-ku", "https://www.photock.jp/photo/middle/photo0000-5209.jpg");
+      let shinjuku = createStationCard("Shinjuku", "Tocho, Kabukicho", "Yamanote Line・Marunouchi Line", "Shinjuku-ku", "https://www.photock.jp/photo/middle/photo0000-1337.jpg");
+      let tokyo = createStationCard("Tokyo", "Marunouchi Area, KITTE", "Yamanote Line・Marunouchi Line", "Chiyoda-ku", "https://www.photock.jp/photo/middle/photo0000-1093.jpg");
+
+      idDiv.append(shibuya);
+      idDiv.append(shinjuku);
+      idDiv.append(tokyo);
+
+</script>
