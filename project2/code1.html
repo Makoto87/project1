@@ -1,0 +1,31 @@
+<!-- addEventListener(1) -->
+
+<!-- 
+      問題文
+      上記のコードを参考にしてMoveボタンを2つ作ってください。
+      1つ目はbuttonタグ内にonclick属性をつけて作成してください。
+      2つ目はidから要素を取得し、JavaScriptでアラートを出すイベントを加えるようにしてください。
+      ボタン内の文字 -> Move1, Move2
+      アラートの文字 -> You cannot move other page from here
+ -->
+
+<head>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+      <style>
+      </style>
+</head>
+
+<!-- ここからユーザーに書いてもらいます。 -->
+<body>
+      <div>
+            <button class="btn bg-primary" onclick="alert (`You cannot move other page from here`)">Move1</button>
+            <button class="btn bg-primary" id="bt">Move2</button>
+      </div>
+</body>
+
+<script>
+      document.getElementById("bt").addEventListener("click", function(){
+            alert(`You cannot move other page from here`);
+      })
+
+</script>

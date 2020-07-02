@@ -1,0 +1,73 @@
+<!-- addEventListener(2) -->
+
+<!-- 
+      問題文
+      上記のコードを参考にして、totalのinputタグに演算結果を表示させるコードをscriptタグ内に作成してください。また、その際に演算子のbuttonタグにid属性を加えてください。
+ -->
+
+ <head>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+      <style>
+      </style>
+</head>
+
+<body>
+      <div class="m-2">
+
+            <!-- オペランド1・2とTest Input -->
+            <div class="col-6 row justify-content-center mb-2">
+                  <label class="col-12 text-center" for="op1">Operand 1 -</label>
+                  <input class="col-12" type="text" id="op1">
+                  <label class="col-12 text-center" for="op2">Operand 2 -</label>
+                  <input class="col-12" type="text" id="op2">
+
+                  <button class="btn bg-secondary" onclick="alert(`Op1: ` + document.getElementById(`op1`).value + `, Op2: ` + document.getElementById(`op2`).value)">Test Input</button>
+            </div>
+            <!-- *** オペランド1・2とTest Input終了*** -->
+
+            <!-- buttonタグにidを加えてください -->
+            <!-- 演算子ボタンと演算処理結果を表示するinputタグ -->
+            <div class="col-6 row justify-content-end">
+                  <label class="col-12" for="total">Total</label>
+                  <input class="col-12" type="text" id="total" disabled>
+                  <div>
+                        <button id="plusOp">+</button>
+                        <button id="minusOp">-</button>
+                        <button id="timesOp">*</button>
+                        <button id="divideOp">/</button>
+                  </div>
+            </div>
+            <!-- 演算子ボタンと演算処理結果を表示するinputタグ終了 -->
+      </div>
+
+
+      <script>
+            // オペランド2つと演算子1つを引数として与えたとき、演算処理結果を返す関数
+            function applyOperation(op1, op2, operator){
+            op1 = parseInt(op1);
+            op2 = parseInt(op2);
+      
+            if(operator === "+") return op1 + op2;
+            if(operator === "-") return op1 - op2;
+            if(operator === "*") return op1 * op2;
+            if(operator === "/") return op1 / op2;
+      
+            return NaN;
+            }
+
+            // ここからユーザーに書いてもらいます
+            // 演算子ボタンをクリックした時にイベントを発生させる処理を書いてください
+            const op1 = document.getElementById("op1");
+            const op2 = document.getElementById("op2");
+            const total = document.getElementById("total");
+            
+            document.getElementById("plusOp").addEventListener("click", function(){total.value = applyOperation(op1.value, op2.value, "+")});
+            
+            document.getElementById("minusOp").addEventListener("click", function(){total.value = applyOperation(op1.value, op2.value, "-")});
+            
+            document.getElementById("timesOp").addEventListener("click", function(){total.value = applyOperation(op1.value, op2.value, "*")});
+            
+            document.getElementById("divideOp").addEventListener("click", function(){total.value = applyOperation(op1.value, op2.value, "/")});
+
+      </script>
+</body>
