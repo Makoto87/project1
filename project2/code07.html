@@ -1,0 +1,94 @@
+<!-- sliderの作成 3 -->
+
+<head>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+   
+      <style>
+          .box{
+              height: 50vh;
+              /* 何らかの変化は2秒間かけて行われる */
+              transition: all 2s linear;
+              padding: 0 !important;
+          }
+    
+          .full-width{
+              width:100%;
+              flex-shrink: 0;
+          }
+    
+          /* 不透明度が下がり、長さが短くなるアニメーション */
+          .deplete-animation{
+              animation: deplete 1s linear forwards;
+          }
+    
+          /* 不透明度が上がり、長さが長くなるアニメーション */
+          .expand-animation{
+              animation: deplete 1s linear reverse forwards;
+          }
+    
+          /* だんだん長さが減り、不透明度が落ちていく */
+          @keyframes  deplete {
+              0%{
+                  width: 100%;
+                  opacity: 1;
+              }
+              100%{
+                  width: 0%;
+                  opacity: 0;
+              }
+          }
+    
+      </style>
+</head>
+   
+<body>
+      <div id="slider1" class="m-5 col-10 offset-1 row">
+            <div class="col-12 slider-data d-none">
+                  <div class="box slider-item bg-primary col-12"></div>
+                  <div class="box slider-item bg-secondary col-12"></div>
+                  <div class="box slider-item bg-success col-12"></div>
+                  <div class="box slider-item bg-warning col-12"></div>
+                  <div class="box slider-item bg-danger col-12"></div>
+            </div>
+      </div>
+
+      <script>
+            const sliderItems = document.querySelectorAll("#slider1 .slider-data .slider-item")
+
+            for (let i = 0; i < sliderItems.length; i++) {
+                  sliderItems[i].classList.add("processed");
+            }
+
+            let main = document.createElement("div");
+            let extra = document.createElement("div");
+            let sliderShow = document.createElement("div");
+
+            sliderShow.classList.add("col-12", "d-flex", "flex-nowrap", "overflow-hiddens");
+            main.classList.add("main", "full-width");
+            extra.classList.add("extra","full-width");
+
+            main.append(sliderItems[0]);
+            main.setAttribute("data-index", "0");
+
+            sliderShow.append(main);
+            sliderShow.append(extra);
+
+            const targetSlider = document.getElementById("slider1");
+            targetSlider.append(sliderShow);
+
+            // ここからユーザーに書いてもらいます。
+            // 右ボタンと左ボタンを作成して、HTML上で表示してください
+            let controls = document.createElement("div");
+            controls.classList.add("offset-5", "mt-2");
+            
+            let leftBtn = document.createElement("button");
+            leftBtn.innerHTML = "<";
+            let rightBtn = document.createElement("button");
+            rightBtn.innerHTML = ">";
+            
+            controls.append(leftBtn);
+            controls.append(rightBtn);
+            targetSlider.append(controls);
+      </script>
+
+</body>
