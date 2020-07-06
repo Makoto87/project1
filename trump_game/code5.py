@@ -29,7 +29,6 @@ class Deck:
 
             self.deck = shuffledDeck
 
-      # ここにカードを1枚引く関数を作成してください。
       def draw(self):
             return self.deck.pop()
 
@@ -45,7 +44,19 @@ class Deck:
 
             return newDeck
 
-# ディーラークラスの続きです。各プレイヤーの手札を比べて、誰が勝利したかを返す関数を作成してください。
+# ディーラークラスの続きです。各プレイヤーの手札を足して、得点を返す関数を作成しましょう。21を越えると点数は0になることに注意してください。
+# また、別のクラスHelperFunctionを作成し、その中に複数の得点から最も高いものを返す関数を作成してください。
+
+# 最も高い得点を選ぶ関数を書きましょう。インデックスと得点を配列にまとめて返してください。
+class HelperFunction:
+      @staticmethod
+      def helperMaxInt(points):
+            maxInt = [0,points[0]]
+            for index, point in enumerate(points[1:]):
+                  if int(maxInt[1]) < point:
+                        maxInt = [index + 1, point]
+            return maxInt
+
 class Dealer:
 
       @staticmethod
@@ -64,7 +75,6 @@ class Dealer:
                         personCards.append(table["deck"].draw())
                   table["players"].append(personCards)
 
-            print(table)
             return table
 
 
@@ -74,6 +84,18 @@ class Dealer:
                   return 2
             if gameMode == "porker":
                   return 5
+
+      # プレイヤーの手札を足す関数です
+      @staticmethod
+      def additionCards(cards):
+            point = 0
+            for card in cards:
+                  point += card.intValue + 1
+
+            if 21 >= point >= 0:
+                  return point
+            else:
+                  return 0
       
       @staticmethod
       def printTable(table):
@@ -89,3 +111,10 @@ class Dealer:
 
 table1 = Dealer.initialTable(3, "21")
 Dealer.printTable(table1)
+# 各プレイヤーの得点をprintで出力しましょう
+print(Dealer.additionCards(table1["players"][0]))
+print(Dealer.additionCards(table1["players"][1]))
+print(Dealer.additionCards(table1["players"][2]))
+# 最も高い得点がどれか確かめましょう
+points = [Dealer.additionCards(table1["players"][0]), Dealer.additionCards(table1["players"][1]), Dealer.additionCards(table1["players"][2])]
+print(HelperFunction.helperMaxInt(points))

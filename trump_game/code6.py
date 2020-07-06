@@ -29,7 +29,6 @@ class Deck:
 
             self.deck = shuffledDeck
 
-      # ここにカードを1枚引く関数を作成してください。
       def draw(self):
             return self.deck.pop()
 
@@ -45,8 +44,17 @@ class Deck:
 
             return newDeck
 
-# ディーラーの動きをまとめたクラスDealerを作成します。まずはゲームスタート時にテーブルの状態（各プレイヤーの手札、ゲームの種類、シャッフルされたデッキ）を返す関数を作成しましょう。
-# その際、クラスDeck内にカードを1枚引く関数と、クラスDealer内にゲームの種類によって引く手札の数を返す関数が必要になります。先に作成してから、テーブルの状態を返す関数を作成してください。
+class HelperFunction:
+      @staticmethod
+      def helperMaxInt(points):
+            maxInt = [0,points[0]]
+            for index, point in enumerate(points[1:]):
+                  if int(maxInt[1]) < point:
+                        maxInt = [index + 1, point]
+            return maxInt
+
+
+# ディーラークラスの続きです。21において誰が勝利したかを関数で表します。各プレイヤーの手札を比べて、誰が勝利したかを返す関数を作成してください。前回まで作った関数を活用し、作成してください。
 class Dealer:
 
       @staticmethod
@@ -75,7 +83,43 @@ class Dealer:
             if gameMode == "porker":
                   return 5
 
-      # テーブルの中身（各プレイヤーの手札、ゲームの種類、シャッフルされたデッキ）を表示する関数です。ディーラークラス作成後、これを使って正常な処理ができているか確認してください
+      @staticmethod
+      def checkWinner21(table):
+            # 各プレイヤーの手札を足し、点数を出す
+            playerPoints = []
+            cachePoints = {}
+            for cards in table["players"]:
+                  point = Dealer.additionCards(cards)
+                  playerPoints.append(point)
+                  if point in cachePoints:
+                        cachePoints[point] += 1
+                  else:
+                        cachePoints[point] = 1
+
+            # 各プレイヤーの中で最大の点数を探す
+            maxInt = HelperFunction.helperMaxInt(playerPoints)
+            # 最大値の数値とインデックスが合っているか確かめましょう
+            print(int(maxInt[1]))
+            print(int(maxInt[0]))
+
+            if cachePoints[int(maxInt[1])] == 0:
+                  return "no winner"
+            elif cachePoints[int(maxInt[1])] > 1:
+                  return "draw"
+            else:
+                  return "winner is " + str(maxInt[0] + 1) + "player"
+
+      @staticmethod
+      def additionCards(cards):
+            point = 0
+            for card in cards:
+                  point += card.intValue + 1
+
+            if 21 >= point >= 0:
+                  return point
+            else:
+                  return 0
+      
       @staticmethod
       def printTable(table):
             print("This table: ")
@@ -90,3 +134,4 @@ class Dealer:
 
 table1 = Dealer.initialTable(3, "21")
 Dealer.printTable(table1)
+print(Dealer.checkWinner21(table1))
