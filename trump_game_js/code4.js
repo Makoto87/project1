@@ -5,33 +5,29 @@ class Card {
             this.intValue = intValue
       }
 
-      infoOfCard() {
+      getCardString() {
             return this.suit + this.value + "(" + this.intValue + ")";
       }
 }
 
 class Deck {
-      constructor(deck) {
-            this.deck = deck;
+      constructor() {
+            this.deck = Deck.generateDeck();
       }
 
       shuffleDeck() {
-            let newDeck = [];
             for (let i = 0; i < this.deck.length; i++) {
-                  newDeck.push(this.deck[i]);
-                  // console.log(this.deck[i]);
                   let j = Math.floor(Math.random() * (i + 1));
-                  let temp = newDeck[i];
-                  newDeck[i] = newDeck[j];
-                  newDeck[j] = temp;
+                  let temp = this.deck[i];
+                  this.deck[i] = this.deck[j];
+                  this.deck[j] = temp;
             }
-
-            this.deck = newDeck;
       }
 
       printDeck() {
+            console.log("Displaying cards...")
             for (let i = 0; i < this.deck.length; i++) {
-                  console.log(this.deck[i].infoOfCard());
+                  console.log(this.deck[i].getCardString());
             }
       }
 
@@ -40,9 +36,9 @@ class Deck {
             return this.deck.pop()
       }
 
-      static createDeck() {
+      static generateDeck() {
             let newDeck = [];
-            const suits = ["♦︎", "♡", "♠︎", "♣︎"];
+            const suits = ["♣", "♦", "♥", "♠"];
             const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
             for (let i = 0; i < suits.length; i++) {
@@ -58,29 +54,27 @@ class Deck {
 // ディーラーの動きをまとめたクラスDealerを作成します。まずはゲームスタート時にテーブルの状態（各プレイヤーの手札、ゲームの種類、シャッフルされたデッキ）を返す関数を作成しましょう。
 // その際、クラスDeck内にカードを1枚引く関数と、クラスDealer内にゲームの種類によって引く手札の数を返す関数が必要になります。先に作成してから、テーブルの状態を返す関数を作成してください。
 
+// ここから記入してください
+// インスタンスを作成する必要がないので、全てstaticメソッドにしましょう
 class Dealer {
 
-      // テーブルの中身（各プレイヤーの手札、ゲームの種類、シャッフルされたデッキ）を表示する関数です。
-      // 人数とゲームの種類を入力し、テーブルの状態を返します
-      static initialTable(amountOfPlayers, gameMode) {
+      // テーブルの状態を表す関数です。人数とゲームの種類が与えられ、デッキのシャッフルと各プレイヤーの手札を作成する処理を行い、テーブルの状態を返します
+      static startGame(amountOfPlayers, gameMode) {
             // 連想配列でテーブルの状態を作成します。
             let table = {
                   "players":[],
                   "gameMode": gameMode,
-                  "deck": []
+                  "deck": new Deck()
             }
 
-            // クラスDeckを使って、生み出したデッキをtableにセットし、シャッフルします。
-            table["deck"] = new Deck(Deck.createDeck());
+            // デッキをシャッフルします
             table["deck"].shuffleDeck();
 
             // デッキからカードを引いていき、各プレイヤーの手札をtableにセットします。
             for (let i = 0; i < amountOfPlayers; i++) {
                   let playerCard = [];
                   for (let j = 0; j < Dealer.initialCards(gameMode); j++) {
-                        let cards = [];
-                        cards.push(table["deck"].draw());
-                        playerCard.push(cards);
+                        playerCard.push(table["deck"].draw());
                   }
                   table["players"].push(playerCard);
             }
@@ -88,15 +82,28 @@ class Dealer {
             return table;
       }
 
-      // ゲームの種類によって何枚カードを引くか、数字を返す関数を作成しましょう。
+      // ゲームの種類が与えられるので、種類によって何枚カードを引くか、数字を返す関数を作成しましょう。
       static initialCards(gameMode) {
             if (gameMode == "21") { return 2;}
             if (gameMode == "porker") { return 5;}
       }
+
+      // テーブルの状態を表す関数を用意しました。これを使って、テーブルの状態を確認しましょう
+      static printTableInformation(table) {
+            console.log("Amount of players: " + table["players"].length + "... Game mode: " + table["gameMode"] + ". At this table: ");
+
+            for (let i = 0; i < table["players"].length; i++) {
+                  console.log("Player " + (i + 1) + " hand is: ");
+                  for(let j = 0; j < table["players"][i].length; j++) {
+                        console.log(table["players"][i][j].getCardString());
+                  }
+            }
+      }
+
+      
 }
 
-let table1 = Dealer.initialTable(3, "21");
-console.log(table1);
-console.log(table1["players"][0][0]);
-console.log(table1["players"][2][0]);
-console.log(table1["deck"].printDeck());
+// 新しくデッキを生成します
+let table1 = Dealer.startGame(3, "21");
+// 用意した関数を使って、テーブルの状態を見ましょう
+Dealer.printTableInformation(table1);

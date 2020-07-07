@@ -5,7 +5,7 @@ class Card {
             this.intValue = intValue
       }
 
-      infoOfCard() {
+      getCardString() {
             return this.suit + this.value + "(" + this.intValue + ")";
       }
 }
@@ -13,35 +13,33 @@ class Card {
 // デッキを表すクラスDeckの続きです。次は、デッキをシャッフルする関数を作成しましょう。また、デッキにあるカードを全て表示する関数を作成し、シャッフルする前と後を比べてみましょう。
 
 class Deck {
-      constructor(deck) {
-            this.deck = deck;
+      constructor() {
+            this.deck = Deck.generateDeck();
       }
 
+      // ここから記入してください
       // シャッフルする関数はtwo pointerを活用します。for文で一つ一つのカードをランダムに入れ替える処理を書きましょう。
       shuffleDeck() {
-            let newDeck = [];
             for (let i = 0; i < this.deck.length; i++) {
-                  newDeck.push(this.deck[i]);
-                  // console.log(this.deck[i]);
+                  // ランダムに得た数値をインデックスとし、two pointerで入れ替えます。
                   let j = Math.floor(Math.random() * (i + 1));
-                  let temp = newDeck[i];
-                  newDeck[i] = newDeck[j];
-                  newDeck[j] = temp;
+                  let temp = this.deck[i];
+                  this.deck[i] = this.deck[j];
+                  this.deck[j] = temp;
             }
-
-            this.deck = newDeck;
       }
 
       // デッキにあるカードを全て表示する関数は、デッキの一つ一つ内のカードを、クラスCard内にあるカードを表示する関数を使って表示します。
-      pringDeck() {
+      printDeck() {
+            console.log("Displaying cards...")
             for (let i = 0; i < this.deck.length; i++) {
-                  console.log(this.deck[i].infoOfCard());
+                  console.log(this.deck[i].getCardString());
             }
       }
 
-      static createDeck() {
+      static generateDeck() {
             let newDeck = [];
-            const suits = ["♦︎", "♡", "♠︎", "♣︎"];
+            const suits = ["♣", "♦", "♥", "♠"];
             const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
             for (let i = 0; i < suits.length; i++) {
@@ -54,7 +52,8 @@ class Deck {
       }
 }
 
-let deck1 = new Deck(Deck.createDeck());
+// 新しくデッキを生成します
+let deck1 = new Deck();
 console.log(deck1)
 console.log("\n");
 // デッキをシャッフルします
@@ -62,8 +61,8 @@ deck1.shuffleDeck();
 console.log(deck1);
 console.log("\n");
 // シャッフルする前のデッキと後のデッキを表示しましょう
-let deck2 = new Deck(Deck.createDeck());
-deck2.pringDeck();
+let deck2 = new Deck();
+deck2.printDeck();
 console.log("\n");
 deck2.shuffleDeck();
-deck2.pringDeck();
+deck2.printDeck();

@@ -5,7 +5,7 @@ class Card {
             this.intValue = intValue
       }
 
-      infoOfCard() {
+      getCardString() {
             return this.suit + this.value + "(" + this.intValue + ")";
       }
 }
@@ -16,22 +16,18 @@ class Deck {
       }
 
       shuffleDeck() {
-            let newDeck = [];
             for (let i = 0; i < this.deck.length; i++) {
-                  newDeck.push(this.deck[i]);
-                  // console.log(this.deck[i]);
                   let j = Math.floor(Math.random() * (i + 1));
-                  let temp = newDeck[i];
-                  newDeck[i] = newDeck[j];
-                  newDeck[j] = temp;
+                  let temp = this.deck[i];
+                  this.deck[i] = this.deck[j];
+                  this.deck[j] = temp;
             }
-
-            this.deck = newDeck;
       }
 
       printDeck() {
+            console.log("Displaying cards...")
             for (let i = 0; i < this.deck.length; i++) {
-                  console.log(this.deck[i].infoOfCard());
+                  console.log(this.deck[i].getCardString());
             }
       }
 
@@ -39,9 +35,9 @@ class Deck {
             return this.deck.pop()
       }
 
-      static createDeck() {
+      static generateDeck() {
             let newDeck = [];
-            const suits = ["♦︎", "♡", "♠︎", "♣︎"];
+            const suits = ["♣", "♦", "♥", "♠"];
             const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
             for (let i = 0; i < suits.length; i++) {
@@ -55,14 +51,17 @@ class Deck {
 }
 
 // ディーラークラスの続きです。各プレイヤーの手札を足して、得点を返す関数を作成しましょう。21を越えると点数は0になることに注意してください。
-// また、別のクラスHelperFunctionを作成し、その中に複数の得点から最も高いものを返す関数を作成してください。
+// また、別のクラスHelperFunctionsを作成し、その中に複数の得点から最も高いものを返す関数を作成してください。
 
+// ここから記入してください
 // 最も高い得点を選ぶ関数を書きましょう。インデックスと得点を配列にまとめて返してください。各プレイヤーの得点が与えられます。
-class HelperFunction {
-      static helperMaxInt(points) {
+class HelperFunctions {
+      static maxInArrayIndex(points) {
+            // 0番目がインデックスの値（最大値を持つプレイヤーが誰かわかるようにします）1番目が最大値です
             let maxInt = [0,0];
             for (let i = 0; i < points.length; i++) {
                   if (maxInt[1] < points[i]) { 
+                        // 得点が大きかった場合、インデックスの値と最大値を更新します。
                         maxInt[1] = points[i];
                         maxInt[0] = i;
                   }
@@ -73,22 +72,19 @@ class HelperFunction {
 
 class Dealer {
 
-      static initialTable(amountOfPlayers, gameMode) {
+      static startGame(amountOfPlayers, gameMode) {
             let table = {
                   "players":[],
                   "gameMode": gameMode,
-                  "deck": []
+                  "deck": new Deck(Deck.generateDeck())
             }
 
-            table["deck"] = new Deck(Deck.createDeck());
             table["deck"].shuffleDeck();
 
             for (let i = 0; i < amountOfPlayers; i++) {
                   let playerCard = [];
                   for (let j = 0; j < Dealer.initialCards(gameMode); j++) {
-                        let cards = [];
-                        cards.push(table["deck"].draw());
-                        playerCard.push(cards);
+                        playerCard.push(table["deck"].draw());
                   }
                   table["players"].push(playerCard);
             }
@@ -102,15 +98,18 @@ class Dealer {
       }
 
       // 各プレイヤーの手札の数値を足す関数を作成しましょう。1人のプレイヤーの手札を与えるので、合計を返します。21を越えると点数は0になることに注意してください。
-      static additionCards(cards) {
-            let point = 0;
+      static score21Individual(cards) {
+            let value = 0;
             for (let i = 0; i < cards.length; i++) {
-                  point += cards[i].intValue;
+                  // intValueは0番目から始まるので、1を足します。
+                  value += cards[i].intValue + 1;
             }
-            if (point > 21) { point = 0; }
-            return point;
+            if (value > 21) { value = 0; }
+            return value;
       }
 }
 
-console.log(Dealer.additionCards([new Card("♦︎","A", 1),new Card("♦︎","J", 11)]));
-console.log(HelperFunction.helperMaxInt([12,3,21]));
+// 2つのカードを足した時の数値を返します
+console.log(Dealer.score21Individual([new Card("♦︎","A", 1),new Card("♦︎","J", 11)]));
+// 最大値のインデックスと数値を返します
+console.log(HelperFunctions.maxInArrayIndex([12,3,21]));

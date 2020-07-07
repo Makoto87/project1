@@ -6,28 +6,25 @@ class Card:
             self.suit = suit
             self.intValue = intValue
 
-      def infoOfCard(self):
+      def getCardString(self):
             return self.suit + self.value + "(" + str(self.intValue) + ")"
 
 class Deck:
       def __init__(self):
             self.deck = self.generateDeck()
 
-      def printCard(self):
+      def printDeck(self):
             print("Displaying cards...")
             for i in self.deck:
-                  print(i.infoOfCard())
+                  print(i.getCardString())
 
       def shuffleDeck(self):
-            shuffledDeck = []
-            for i, card in enumerate(self.deck):
-                  shuffledDeck.append(card)
+            deckSize = len(self.deck)
+            for i in range(0, deckSize):
                   j = random.randint(0,i)
-                  temp = shuffledDeck[j]
-                  shuffledDeck[j] = card
-                  shuffledDeck[i] = temp
-
-            self.deck = shuffledDeck
+                  temp = self.deck[i]
+                  self.deck[i] = self.deck[j]
+                  self.deck[j] = temp
 
       def draw(self):
             return self.deck.pop()
@@ -36,7 +33,7 @@ class Deck:
       def generateDeck():
             newDeck = []
             values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
-            suits = ["♦︎", "♡", "♠︎", "♣︎"]
+            suits = ["♣", "♦", "♥", "♠"]
 
             for suit in suits:
                   for i, value in enumerate(values):
@@ -45,17 +42,21 @@ class Deck:
             return newDeck
 
 # ディーラークラスの続きです。各プレイヤーの手札を足して、得点を返す関数を作成しましょう。21を越えると点数は0になることに注意してください。
-# また、別のクラスHelperFunctionを作成し、その中に複数の得点から最も高いものを返す関数を作成してください。
+# また、別のクラスHelperFunctionを作成し、その中に最高得点をとったプレイヤーのインデックスを返す関数を作成してください。
 
-# 最も高い得点を選ぶ関数を書きましょう。インデックスと得点を配列にまとめて返してください。
+# ここから記入してください
+# 最高点をとったプレイヤーのインデックスを返す関数を書きましょう。各プレイヤーの得点が与えられます。
 class HelperFunction:
       @staticmethod
-      def helperMaxInt(points):
+      def maxInArrayIndex(points):
+            # 0番目がインデックスの値（最大値を持つプレイヤーが誰かわかるようにします）1番目が最大値です
             maxInt = [0,points[0]]
             for index, point in enumerate(points[1:]):
                   if int(maxInt[1]) < point:
+                        # 得点が大きかった場合、インデックスの値と最大値を更新します。
                         maxInt = [index + 1, point]
-            return maxInt
+            # インデックスを返します
+            return maxInt[0]
 
 class Dealer:
 
@@ -85,36 +86,32 @@ class Dealer:
             if gameMode == "porker":
                   return 5
 
-      # プレイヤーの手札を足す関数です
+      # 各プレイヤーの手札の数値を足す関数を作成しましょう。1人のプレイヤーの手札を与えるので、合計を返します。21を越えると点数は0になることに注意してください。
       @staticmethod
-      def additionCards(cards):
-            point = 0
+      def score21Individual(cards):
+            value = 0
             for card in cards:
-                  point += card.intValue + 1
-
-            if 21 >= point >= 0:
-                  return point
-            else:
-                  return 0
+                  value += card.intValue + 1
+            return value if 21 >= value >= 1 else 0
       
       @staticmethod
       def printTable(table):
             print("This table: ")
             print("gameMode: " + table["gameMode"])
             print("deck: ")
-            table["deck"].printCard()
+            table["deck"].printDeck()
             for i, player in enumerate(table["players"]):
                   print(str(i + 1) + "player's cards: ")
                   for cards in player:
-                        print(cards.infoOfCard())
+                        print(cards.getCardString())
 
-
+# テーブルを生成します
 table1 = Dealer.initialTable(3, "21")
 Dealer.printTable(table1)
-# 各プレイヤーの得点をprintで出力しましょう
-print(Dealer.additionCards(table1["players"][0]))
-print(Dealer.additionCards(table1["players"][1]))
-print(Dealer.additionCards(table1["players"][2]))
-# 最も高い得点がどれか確かめましょう
-points = [Dealer.additionCards(table1["players"][0]), Dealer.additionCards(table1["players"][1]), Dealer.additionCards(table1["players"][2])]
+# 各プレイヤーの手札を足した数をprintで出力します
+print(Dealer.score21Individual(table1["players"][0]))
+print(Dealer.score21Individual(table1["players"][1]))
+print(Dealer.score21Individual(table1["players"][2]))
+# 最も高い得点がどれか確かめます
+points = [Dealer.score21Individual(table1["players"][0]), Dealer.score21Individual(table1["players"][1]), Dealer.score21Individual(table1["players"][2])]
 print(HelperFunction.helperMaxInt(points))

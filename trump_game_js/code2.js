@@ -1,5 +1,5 @@
 // 次にデッキを表すクラスDeckを生成しましょう
-// 前回作成したカードを生み出す関数を活用し、クラス内にトランプのカード全種類を生成させる関数を作成しましょう。その後、その関数を使って、トランプカードが全種類入ったデッキをインスタンス化させる関数を作成しましょう
+// クラスCardを活用し、クラスDeckにトランプのカード全種類を生成させる関数を作成しましょう。その後、その関数を使って、デッキをインスタンス化させるコンストラクタを作成しましょう
 
 class Card {
       constructor(suit, value, intValue) {
@@ -8,19 +8,23 @@ class Card {
             this.intValue = intValue
       }
 
-      infoOfCard() {
+      getCardString() {
             return this.suit + this.value + "(" + this.intValue + ")";
       }
 }
 
+// ここから記入してください
 class Deck {
-      constructor(deck) {
-            this.deck = deck;
+      // コンストラクタ
+      constructor() {
+            this.deck = Deck.generateDeck();
       }
 
-      static createDeck() {
+      // デッキを生み出す関数を作成します。staticメソッドを使います。ここではインスタンス無しでも使える関数と考えていただければ問題ありません。
+      // 全記号・全ての値を用意し、for文で一つずつカードを生成します。
+      static generateDeck() {
             let newDeck = [];
-            const suits = ["♦︎", "♡", "♠︎", "♣︎"];
+            const suits = ["♣", "♦", "♥", "♠"];
             const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
             for (let i = 0; i < suits.length; i++) {
@@ -28,10 +32,11 @@ class Deck {
                         newDeck.push(new Card(suits[i], values[j], j));
                   }
             }
-
             return newDeck;
       }
 }
 
-let deck1 = new Deck(Deck.createDeck());
+// こちらが用意しておきます
+// 新しくデッキを作成し、コンソール上に出力します
+let deck1 = new Deck();
 console.log(deck1)

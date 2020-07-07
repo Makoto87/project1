@@ -6,28 +6,25 @@ class Card:
             self.suit = suit
             self.intValue = intValue
 
-      def infoOfCard(self):
+      def getCardString(self):
             return self.suit + self.value + "(" + str(self.intValue) + ")"
 
 class Deck:
       def __init__(self):
             self.deck = self.generateDeck()
 
-      def printCard(self):
+      def printDeck(self):
             print("Displaying cards...")
             for i in self.deck:
-                  print(i.infoOfCard())
+                  print(i.getCardString())
 
       def shuffleDeck(self):
-            shuffledDeck = []
-            for i, card in enumerate(self.deck):
-                  shuffledDeck.append(card)
+            deckSize = len(self.deck)
+            for i in range(0, deckSize):
                   j = random.randint(0,i)
-                  temp = shuffledDeck[j]
-                  shuffledDeck[j] = card
-                  shuffledDeck[i] = temp
-
-            self.deck = shuffledDeck
+                  temp = self.deck[i]
+                  self.deck[i] = self.deck[j]
+                  self.deck[j] = temp
 
       def draw(self):
             return self.deck.pop()
@@ -36,7 +33,7 @@ class Deck:
       def generateDeck():
             newDeck = []
             values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
-            suits = ["♦︎", "♡", "♠︎", "♣︎"]
+            suits = ["♣", "♦", "♥", "♠"]
 
             for suit in suits:
                   for i, value in enumerate(values):
@@ -46,12 +43,12 @@ class Deck:
 
 class HelperFunction:
       @staticmethod
-      def helperMaxInt(points):
+      def maxInArrayIndex(points):
             maxInt = [0,points[0]]
             for index, point in enumerate(points[1:]):
                   if int(maxInt[1]) < point:
                         maxInt = [index + 1, point]
-            return maxInt
+            return maxInt[0]
 
 
 # ディーラークラスの続きです。tabelのgameModeによって、勝利条件を変える関数を作成しましょう。
@@ -83,7 +80,8 @@ class Dealer:
             if gameMode == "porker":
                   return 5
 
-      # ゲームの種類によって返すものを変えます。
+      # ここから記入してください
+      # テーブルの状態を与え、ゲームの種類に応じた勝利条件にを返します・
       @staticmethod
       def selectWinnerConditions(table):
             if table["gameMode"] == "21":
@@ -96,47 +94,43 @@ class Dealer:
             playerPoints = []
             cachePoints = {}
             for cards in table["players"]:
-                  point = Dealer.additionCards(cards)
+                  point = Dealer.score21Individual(cards)
                   playerPoints.append(point)
                   if point in cachePoints:
                         cachePoints[point] += 1
                   else:
                         cachePoints[point] = 1
 
-            maxInt = HelperFunction.helperMaxInt(playerPoints)
-            print(int(maxInt[1]))
-            print(int(maxInt[0]))
+            maxIndex = HelperFunction.maxInArrayIndex(playerPoints)
 
-            if cachePoints[int(maxInt[1])] == 0:
+            if cachePoints[playerPoints[maxIndex]] == 0:
                   return "no winner"
-            elif cachePoints[int(maxInt[1])] > 1:
+            elif cachePoints[playerPoints[maxIndex]] > 1:
                   return "draw"
             else:
-                  return "winner is " + str(maxInt[0] + 1) + "player"
+                  return "winner is " + str(maxIndex + 1) + "player"
 
       @staticmethod
-      def additionCards(cards):
-            point = 0
+      def score21Individual(cards):
+            value = 0
             for card in cards:
-                  point += card.intValue + 1
+                  value += card.intValue + 1
 
-            if 21 >= point >= 0:
-                  return point
-            else:
-                  return 0
+            return value if 21 >= value >= 1 else 0
       
       @staticmethod
       def printTable(table):
             print("This table: ")
             print("gameMode: " + table["gameMode"])
             print("deck: ")
-            table["deck"].printCard()
+            table["deck"].printDeck()
             for i, player in enumerate(table["players"]):
                   print(str(i + 1) + "player's cards: ")
                   for cards in player:
-                        print(cards.infoOfCard())
+                        print(cards.getCardString())
 
-
+# テーブルを生成します
 table1 = Dealer.initialTable(3, "21")
 Dealer.printTable(table1)
+# ゲームの種類によって勝利条件を選び、勝者を返します
 print(Dealer.selectWinnerConditions(table1))

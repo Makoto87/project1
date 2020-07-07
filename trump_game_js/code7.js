@@ -5,7 +5,7 @@ class Card {
             this.intValue = intValue
       }
 
-      infoOfCard() {
+      getCardString() {
             return this.suit + this.value + "(" + this.intValue + ")";
       }
 }
@@ -16,21 +16,18 @@ class Deck {
       }
 
       shuffleDeck() {
-            let newDeck = [];
             for (let i = 0; i < this.deck.length; i++) {
-                  newDeck.push(this.deck[i]);
                   let j = Math.floor(Math.random() * (i + 1));
-                  let temp = newDeck[i];
-                  newDeck[i] = newDeck[j];
-                  newDeck[j] = temp;
+                  let temp = this.deck[i];
+                  this.deck[i] = this.deck[j];
+                  this.deck[j] = temp;
             }
-
-            this.deck = newDeck;
       }
 
       printDeck() {
+            console.log("Displaying cards...")
             for (let i = 0; i < this.deck.length; i++) {
-                  console.log(this.deck[i].infoOfCard());
+                  console.log(this.deck[i].getCardString());
             }
       }
 
@@ -38,9 +35,9 @@ class Deck {
             return this.deck.pop()
       }
 
-      static createDeck() {
+      static generateDeck() {
             let newDeck = [];
-            const suits = ["♦︎", "♡", "♠︎", "♣︎"];
+            const suits = ["♣", "♦", "♥", "♠"];
             const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
             for (let i = 0; i < suits.length; i++) {
@@ -70,22 +67,19 @@ class HelperFunction {
 
 class Dealer {
 
-      static initialTable(amountOfPlayers, gameMode) {
+      static startGame(amountOfPlayers, gameMode) {
             let table = {
                   "players":[],
                   "gameMode": gameMode,
-                  "deck": []
+                  "deck": new Deck(Deck.generateDeck())
             }
 
-            table["deck"] = new Deck(Deck.createDeck());
             table["deck"].shuffleDeck();
 
             for (let i = 0; i < amountOfPlayers; i++) {
                   let playerCard = [];
                   for (let j = 0; j < Dealer.initialCards(gameMode); j++) {
-                        let cards = [];
-                        cards.push(table["deck"].draw());
-                        playerCard.push(cards);
+                        playerCard.push(table["deck"].draw());
                   }
                   table["players"].push(playerCard);
             }
@@ -98,50 +92,55 @@ class Dealer {
             if (gameMode == "porker") { return 5;}
       }
 
-      static additionCards(cards) {
-            let point = 0;
+      static score21Individual(cards) {
+            let value = 0;
             for (let i = 0; i < cards.length; i++) {
-                  point += cards[i].intValue + 1;
+                  value += cards[i].intValue + 1;
             }
-            if (point > 21) { point = 0; }
-            return point;
+            if (value > 21) { value = 0; }
+            return value;
       }
 
+      // ここから記入してください
       // テーブルの状態を与え、ゲームの種類に応じた勝利条件にを返します・
-      static selectGame(table) {
-            if (table["gameMode"] == "21") { return Dealer.winnerOf21(table); }
+      static checkWinner(table) {
+            if (table["gameMode"] == "21") {
+                  return Dealer.checkWinner21(table);
+            } else {
+                  return "no game"
+            }
       }
 
-      static winnerOf21(table) {
-            let points = [];
-            let cache = [];
+      static checkWinner21(table) {
+            let playerStats = [];
+            let cachedScores = [];
             for (let i = 0; i < table["players"].length; i++) {
-                  // なぜか末尾に0を入れないとエラーになるので、直します。
-                  let player = table["players"][i][0];
-                  let point = Dealer.additionCards(player);
-                  if (cache[point] >= 1) {
-                        cache[point] += 1;
+                  let player = table["players"][i];
+                  let point = Dealer.score21Individual(player);
+                  if (cachedScores[point] >= 1) {
+                        cachedScores[point] += 1;
                   } else {
-                        cache[point] = 1;
+                        cachedScores[point] = 1;
                   }
-                  points.push(point);
+                  playerStats.push(point);
             }
 
-            let maxInt = HelperFunction.helperMaxInt(points);
+            let maxInt = HelperFunction.helperMaxInt(playerStats);
 
-            if (cache[maxInt[1]] > 1) {
-                  return "draw";
-            } else if (maxInt[1] == 0) {
-                  return "no winner";
+            if (maxInt[1] == 0) {
+                  return "No winners..";
+            } else if (cache[maxInt[1]] > 1) {
+                  return "It is a draw ";
             } else {
-                  return "winner is " + (maxInt[0] + 1) + " player";
+                  return "player " + (maxInt[0] + 1) + " is the winner";
             }
 
       }
 }
 
-let table1 = Dealer.initialTable(3, "21");
-console.log(table1["players"][0]);
-console.log(table1["players"][1]);
-console.log(table1["players"][2]);
-console.log(Dealer.selectGame(table1));
+// 勝利条件の記述があるゲームの場合
+let table1 = Dealer.startGame(3, "21");
+console.log(Dealer.checkWinner(table1));
+// 勝利条件の記述がないゲームの場合
+let table2 = Dealer.startGame(3, "porker");
+console.log(Dealer.checkWinner(table2));
