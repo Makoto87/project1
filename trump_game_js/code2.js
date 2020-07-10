@@ -39,4 +39,8 @@ class Deck {
 // こちらが用意しておきます
 // 新しくデッキを作成し、コンソール上に出力します
 let deck1 = new Deck();
-console.log(deck1)
+console.log(deck1);
+
+// add
+console.log(deck1.deck);
+console.log(deck1.deck[3]);
