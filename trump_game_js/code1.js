@@ -22,3 +22,6 @@ class Card {
 // 新しくカードを作成し、カード情報を返す関数を使用します
 let card1 = new Card("♦︎","A",1)
 console.log(card1.getCardString())
+
+// add
+console.log(card1);
