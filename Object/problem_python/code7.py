@@ -32,6 +32,30 @@ class Invoice:
                   print("item : " + currentNode.product.title + ", price : " + str(currentNode.product.price) + ", quantity: " + str(currentNode.quantity))
                   currentNode = currentNode.next
 
+      # 請求書の詳細を返します。
+      def printInvoice(self):
+
+            print(
+                  "Invoice\n" + 
+                  "No. : " + self.invoiceNumber + 
+                  "\nINVOICE DATE : " + self.invoiceDate + 
+                  "\nSHIP TO : " + self.company + 
+                  "\nADDRESS : " + self.companyAddress + 
+                  "\nBILL TO : " + self.billToName + 
+                  "\nADDRESS : " + self.billToAddress
+            )
+
+            # 各商品をprintしていきます
+            currentNode = self.invoiceItemHeadNode
+            while currentNode != None:
+                  # f"{}"と書くことで、{}内に関数や変数を入れることができます。
+                  print(f"{currentNode.product.title}(${str(currentNode.product.price)})--- {str(currentNode.quantity)} pcs. --- AMOUNT: {str(currentNode.product.price * currentNode.quantity)}")
+                  currentNode = currentNode.next
+
+            # 税抜きの合計額、税額、税込みの合計額
+            subtotal = self.amountDue(False)
+            print(f"SUBTOTAL : {subtotal}\nTax : {subtotal * 0.1}\nTOTAL : {subtotal * 1.1}")
+
 # 製品の量
 class InvoiceItemNode:
       def __init__ (self,quantity,product):
